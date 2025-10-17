@@ -156,7 +156,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
   import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-  const firebaseConfig = {
+ const firebaseConfig = {
   apiKey: "AIzaSyDKW_8v70KjJVKbgS4DU9veVa_qzZ1DGu4",
   authDomain: "momy-guardian.firebaseapp.com",
   projectId: "momy-guardian",
@@ -169,11 +169,10 @@
   const app = initializeApp(firebaseConfig);
   const db  = getFirestore(app);
 
-  // حوّل الإيميل إلى SHA-256 لعمل ID ثابت وآمن (بدون أحرف خاصة)
   async function idFromEmail(email) {
-    const data = new TextEncoder().encode(email);
+    const data = new TextEncoder().encode(email.trim().toLowerCase());
     const hash = await crypto.subtle.digest('SHA-256', data);
-    return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
+    return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,'0')).join('');
   }
 
   window.joinWaitlist = async (e) => {
@@ -181,15 +180,10 @@
     const emailEl = document.getElementById('email');
     const notice  = document.getElementById('notice');
     const email   = (emailEl.value || '').trim().toLowerCase();
-
-    if (!email || !email.includes('@')) {
-      notice.textContent = "Please enter a valid email.";
-      return false;
-    }
+    if (!email || !email.includes('@')) { notice.textContent = "Please enter a valid email."; return false; }
 
     try {
       const id = await idFromEmail(email);
-      // setDoc مع merge:false ينشئ مستند جديد فقط؛ لو موجود القاعدة تمنع الإنشاء
       await setDoc(
         doc(db, "waitlist", id),
         { email, createdAt: serverTimestamp(), source: "landing" },
@@ -198,7 +192,6 @@
       notice.textContent = "Thanks! You're on the list. We’ll email you soon.";
       emailEl.value = "";
     } catch (err) {
-      // لو المستند موجود مسبقًا ستفشل العملية بسبب القاعدة (permission-denied)
       if (err && err.code === 'permission-denied') {
         notice.textContent = "You're already on the list. Thanks!";
       } else {
