@@ -154,9 +154,9 @@
 </footer>
   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-const firebaseConfig = {
+  const firebaseConfig = {
   apiKey: "AIzaSyDKW_8v70KjJVKbgS4DU9veVa_qzZ1DGu4",
   authDomain: "momy-guardian.firebaseapp.com",
   projectId: "momy-guardian",
@@ -166,18 +166,27 @@ const firebaseConfig = {
   measurementId: "G-39T2Y4N4KP"
 };
 
-  const app = initializeApp(firebaseConfig);
-  const db  = getFirestore(app);
-
   window.joinWaitlist = async (e) => {
     e.preventDefault();
     const emailEl = document.getElementById('email');
     const notice  = document.getElementById('notice');
     const email   = (emailEl.value || '').trim().toLowerCase();
 
-    if (!email || !email.includes('@')) { notice.textContent = "Please enter a valid email."; return false; }
+    if (!email || !email.includes('@')) {
+      notice.textContent = "Please enter a valid email.";
+      return false;
+    }
 
     try {
+      // تحقق من وجوده مسبقًا
+      const q = query(collection(db, "waitlist"), where("email", "==", email));
+      const snap = await getDocs(q);
+      if (!snap.empty) {
+        notice.textContent = "You're already on the list. Thanks!";
+        emailEl.value = "";
+        return false;
+      }
+
       await addDoc(collection(db, "waitlist"), {
         email,
         createdAt: serverTimestamp(),
@@ -192,6 +201,7 @@ const firebaseConfig = {
     return false;
   };
 </script>
+
 
 </body>
 </html>
