@@ -154,7 +154,7 @@
 </footer>
   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+  import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
   const firebaseConfig = {
   apiKey: "AIzaSyDKW_8v70KjJVKbgS4DU9veVa_qzZ1DGu4",
@@ -165,6 +165,16 @@
   appId: "1:740474776939:web:5a59bc5714e5653dd7b02e",
   measurementId: "G-39T2Y4N4KP"
 };
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getFirestore(app);
+
+  // حوّل الإيميل إلى SHA-256 لعمل ID ثابت وآمن (بدون أحرف خاصة)
+  async function idFromEmail(email) {
+    const data = new TextEncoder().encode(email);
+    const hash = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
+  }
 
   window.joinWaitlist = async (e) => {
     e.preventDefault();
@@ -178,29 +188,28 @@
     }
 
     try {
-      // تحقق من وجوده مسبقًا
-      const q = query(collection(db, "waitlist"), where("email", "==", email));
-      const snap = await getDocs(q);
-      if (!snap.empty) {
-        notice.textContent = "You're already on the list. Thanks!";
-        emailEl.value = "";
-        return false;
-      }
-
-      await addDoc(collection(db, "waitlist"), {
-        email,
-        createdAt: serverTimestamp(),
-        source: "landing"
-      });
+      const id = await idFromEmail(email);
+      // setDoc مع merge:false ينشئ مستند جديد فقط؛ لو موجود القاعدة تمنع الإنشاء
+      await setDoc(
+        doc(db, "waitlist", id),
+        { email, createdAt: serverTimestamp(), source: "landing" },
+        { merge: false }
+      );
       notice.textContent = "Thanks! You're on the list. We’ll email you soon.";
       emailEl.value = "";
     } catch (err) {
-      console.error(err);
-      notice.textContent = "Something went wrong. Please try again.";
+      // لو المستند موجود مسبقًا ستفشل العملية بسبب القاعدة (permission-denied)
+      if (err && err.code === 'permission-denied') {
+        notice.textContent = "You're already on the list. Thanks!";
+      } else {
+        console.error(err);
+        notice.textContent = "Something went wrong. Please try again.";
+      }
     }
     return false;
   };
 </script>
+
 
 
 </body>
