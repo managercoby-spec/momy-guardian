@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Momy Guardian — AI Safety for Kids</title>
+  <meta name="description" content="Momy Guardian is an AI-powered safety companion that helps parents protect their children online. Block harmful content, detect scams, and create a safer digital world.">
+  <meta property="og:title" content="Momy Guardian — AI Safety for Kids">
+  <meta property="og:description" content="Protect your children online with AI-powered filtering, scam detection, and family safety insights.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://dummyimage.com/1200x630/11131a/ffffff&text=Momy+Guardian">
+  <meta name="twitter:card" content="summary_large_image">
+  <style>
+    :root {
+      --bg1: #0b0c10;
+      --bg2: #12141d;
+      --fg: #eaf2ef;
+      --muted: #a6b2b0;
+      --brand: #1ee3b9;
+      --accent: #7b61ff;
+      --alert: #ff657b;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: 'Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      background:linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:var(--fg);
+      -webkit-font-smoothing:antialiased;
+      line-height:1.6;
+    }
+    header{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:20px 28px;max-width:1120px;margin:auto;
+    }
+    .logo{display:flex;align-items:center;gap:10px;font-weight:600;font-size:20px;}
+    .logo-icon{
+      width:36px;height:36px;border-radius:10px;
+      background:conic-gradient(from 210deg,var(--accent),var(--brand));
+      display:grid;place-items:center;box-shadow:var(--shadow);
+    }
+    nav a{margin:0 10px;color:var(--fg);opacity:.85;text-decoration:none;}
+    nav a:hover{opacity:1;}
+    .hero{
+      max-width:1120px;margin:auto;padding:60px 20px;display:grid;
+      grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;
+    }
+    .hero h1{font-size:clamp(32px,4vw,56px);line-height:1.1;margin:0 0 16px;}
+    .lead{color:var(--muted);font-size:18px;max-width:54ch;}
+    .cta{margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;}
+    .btn{
+      padding:14px 18px;border-radius:12px;font-weight:600;cursor:pointer;
+      border:1px solid transparent;transition:.25s ease all;
+    }
+    .btn-primary{background:linear-gradient(135deg,var(--accent),var(--brand));color:#0d1414;}
+    .btn-primary:hover{transform:translateY(-2px);}
+    .btn-outline{background:none;border:1px solid #2a3142;color:var(--fg);}
+    .btn-outline:hover{border-color:#3b425a;transform:translateY(-2px);}
+    .illustration{
+      width:min(420px,100%);border-radius:20px;
+      border:1px solid #242b3d;padding:20px;background:#10141e;box-shadow:var(--shadow);
+    }
+    .grid{max-width:1120px;margin:40px auto;padding:20px;display:grid;gap:18px;grid-template-columns:repeat(3,1fr)}
+    .feature{background:#111623;border:1px solid #222a3c;border-radius:16px;padding:18px;}
+    .feature h3{margin-top:6px;margin-bottom:8px;font-size:20px;}
+    .alert{color:var(--alert);font-weight:600;}
+    .waitlist{text-align:center;max-width:880px;margin:80px auto;padding:20px;}
+    input[type=email]{padding:14px 16px;border-radius:12px;border:1px solid #2a3145;min-width:320px;background:#0d101a;color:var(--fg);}
+    footer{max-width:1120px;margin:0 auto;padding:40px 20px;color:#8e9a97;display:flex;justify-content:space-between;flex-wrap:wrap;}
+    @media(max-width:900px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr}header{flex-direction:column;gap:10px}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <div class="logo-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#0d1515" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-6.716-4.418-9.192-8.364C.332 9.69 1.44 6.5 4.2 5.26 6.156 4.38 8.37 4.92 9.93 6.48L12 8.55l2.07-2.07c1.56-1.56 3.774-2.1 5.73-1.22 2.76 1.24 3.868 4.43 1.392 7.376C18.716 16.582 12 21 12 21z"/></svg>
+      </div>
+      Momy Guardian
+    </div>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#parents">For Parents</a>
+      <a href="#waitlist">Join Beta</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div>
+      <h1>AI Protection for Your Child's Digital World</h1>
+      <p class="lead">Momy Guardian uses artificial intelligence to filter harmful content, detect scams, and ensure a safe, nurturing online experience for children — all while keeping parents informed.</p>
+      <div class="cta">
+        <a href="#waitlist" class="btn btn-primary">Join Beta</a>
+        <a href="#features" class="btn btn-outline">See How It Works</a>
+      </div>
+    </div>
+    <div class="illustration">
+      <div style="background:#151c2c;border-radius:14px;padding:14px;">
+        <p><strong>Blocked:</strong> Suspicious link detected <span class="alert">⚠️</span></p>
+        <p style="color:#9fa8a8;">“mysterygame.winprize.click” contains unsafe content.</p>
+        <p>✅ Alternative suggested: “mathplayground.com”</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="grid">
+    <div class="feature">
+      <h3>1️⃣ Smart Filtering</h3>
+      <p>AI automatically blocks explicit, violent, or scam content before it reaches your child’s device.</p>
+    </div>
+    <div class="feature">
+      <h3>2️⃣ Parent Dashboard</h3>
+      <p>Daily reports of browsing activity, app usage, and flagged risks — all in simple, private summaries.</p>
+    </div>
+    <div class="feature">
+      <h3>3️⃣ Child-Friendly Education</h3>
+      <p>Instead of only blocking, Momy teaches kids <em>why</em> something is unsafe — guiding them with empathy.</p>
+    </div>
+  </section>
+
+  <section id="parents" class="grid">
+    <div class="feature">
+      <h3>Privacy First</h3>
+      <p>All analysis runs locally or through encrypted channels — data never sold or shared.</p>
+    </div>
+    <div class="feature">
+      <h3>Multi-Device Coverage</h3>
+      <p>Protect phones, tablets, and laptops with one account. Works across Android, iOS, and Chrome.</p>
+    </div>
+    <div class="feature">
+      <h3>Peace of Mind</h3>
+      <p>Get gentle alerts, not noise. You stay informed without invading your child’s privacy.</p>
+    </div>
+  </section>
+
+  <section id="waitlist" class="waitlist">
+    <h2>Join the Beta</h2>
+    <p>Be among the first families to try Momy Guardian. We’ll invite early users soon.</p>
+    <form onsubmit="return joinWaitlist(event)">
+      <input type="email" id="email" placeholder="parent@example.com" required>
+      <button class="btn btn-primary" type="submit">Request Invite</button>
+    </form>
+    <div id="notice" style="margin-top:10px;color:#9aa7a4;"></div>
+  </section>
+
+  <footer>
+    <div>© <span id="year"></span> Momy Guardian. All rights reserved.</div>
+    <div><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="mailto:hello@momy.io">Contact</a></div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    function joinWaitlist(e){
+      e.preventDefault();
+      const el = document.getElementById('email');
+      const n = document.getElementById('notice');
+      n.textContent = "Thanks! You're on the list. We'll email you soon.";
+      el.value = '';
+      return false;
+    }
+  </script>
+</body>
+</html>
