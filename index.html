@@ -152,18 +152,46 @@
     <a href="mailto:hello@momy.io">Contact</a>
   </div>
 </footer>
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
+const firebaseConfig = {
+  apiKey: "AIzaSyDKW_8v70KjJVKbgS4DU9veVa_qzZ1DGu4",
+  authDomain: "momy-guardian.firebaseapp.com",
+  projectId: "momy-guardian",
+  storageBucket: "momy-guardian.firebasestorage.app",
+  messagingSenderId: "740474776939",
+  appId: "1:740474776939:web:5a59bc5714e5653dd7b02e",
+  measurementId: "G-39T2Y4N4KP"
+};
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-    function joinWaitlist(e){
-      e.preventDefault();
-      const el = document.getElementById('email');
-      const n = document.getElementById('notice');
-      n.textContent = "Thanks! You're on the list. We'll email you soon.";
-      el.value = '';
-      return false;
+  const app = initializeApp(firebaseConfig);
+  const db  = getFirestore(app);
+
+  window.joinWaitlist = async (e) => {
+    e.preventDefault();
+    const emailEl = document.getElementById('email');
+    const notice  = document.getElementById('notice');
+    const email   = (emailEl.value || '').trim().toLowerCase();
+
+    if (!email || !email.includes('@')) { notice.textContent = "Please enter a valid email."; return false; }
+
+    try {
+      await addDoc(collection(db, "waitlist"), {
+        email,
+        createdAt: serverTimestamp(),
+        source: "landing"
+      });
+      notice.textContent = "Thanks! You're on the list. We’ll email you soon.";
+      emailEl.value = "";
+    } catch (err) {
+      console.error(err);
+      notice.textContent = "Something went wrong. Please try again.";
     }
-  </script>
+    return false;
+  };
+</script>
+
 </body>
 </html>
