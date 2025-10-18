@@ -70,6 +70,15 @@
     footer{max-width:1120px;margin:0 auto;padding:40px 20px;color:#8e9a97;display:flex;justify-content:space-between;flex-wrap:wrap;}
     @media(max-width:900px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr}header{flex-direction:column;gap:10px}}
   </style>
+  <!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-39T2Y4N4KP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX'); /* ضع الـID هنا */
+</script>
+
 </head>
 <body>
   <header>
@@ -176,31 +185,38 @@
   }
 
   window.joinWaitlist = async (e) => {
-    e.preventDefault();
-    const emailEl = document.getElementById('email');
-    const notice  = document.getElementById('notice');
-    const email   = (emailEl.value || '').trim().toLowerCase();
-    if (!email || !email.includes('@')) { notice.textContent = "Please enter a valid email."; return false; }
+  e.preventDefault();
+  const emailEl = document.getElementById('email');
+  const notice  = document.getElementById('notice');
+  const email   = (emailEl.value || '').trim().toLowerCase();
+  if (!email || !email.includes('@')) { notice.textContent = "Please enter a valid email."; return false; }
 
-    try {
-      const id = await idFromEmail(email);
-      await setDoc(
-        doc(db, "waitlist", id),
-        { email, createdAt: serverTimestamp(), source: "landing" },
-        { merge: false }
-      );
-      notice.textContent = "Thanks! You're on the list. We’ll email you soon.";
-      emailEl.value = "";
-    } catch (err) {
-      if (err && err.code === 'permission-denied') {
-        notice.textContent = "You're already on the list. Thanks!";
-      } else {
-        console.error(err);
-        notice.textContent = "Something went wrong. Please try again.";
-      }
+  try {
+    const id = await idFromEmail(email);
+    await setDoc(
+      doc(db, "waitlist", id),
+      { email, createdAt: serverTimestamp(), source: "landing" },
+      { merge: false }
+    );
+
+    // GA4 event
+    if (typeof gtag === 'function') {
+      gtag('event', 'waitlist_signup', { method: 'landing_form' });
     }
-    return false;
-  };
+
+    // صفحة الشكر
+    window.location.href = "/thanks.html";
+  } catch (err) {
+    if (err && err.code === 'permission-denied') {
+      notice.textContent = "You're already on the list. Thanks!";
+    } else {
+      console.error(err);
+      notice.textContent = "Something went wrong. Please try again.";
+    }
+  }
+  return false;
+};
+
 </script>
 
 
